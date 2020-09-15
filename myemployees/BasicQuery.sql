@@ -54,3 +54,23 @@ SELECT last_name "out put" FROM employees;
 
 -- 查询员工表中涉及的所有部门编号
 SELECT DISTINCT department_id FROM employees;
+
+-- +号
+
+-- 数值型相加 
+SELECT 100 + 100;
+
+-- 字符型转数值🌿或0 
+SELECT '123' + 100;
+SELECT '100' + '100';
+SELECT 'hello' + 100;
+SELECT 'hello' + '100';
+SELECT 'hello' + 'world';
+SELECT 1 + 2 + 'hello';
+SELECT 'hello' + 'hello' + 'hello';
+
+-- NULL 一定为 NULL 
+SELECT NULL + 0;
+SELECT NULL + NULL;
+SELECT NULL + 'hello';
+SELECT NULL + 'hello' + 1;
