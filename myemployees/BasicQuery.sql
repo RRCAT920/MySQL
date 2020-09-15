@@ -74,3 +74,11 @@ SELECT NULL + 0;
 SELECT NULL + NULL;
 SELECT NULL + 'hello';
 SELECT NULL + 'hello' + 1;
+
+-- 拼接 
+SELECT 
+	CONCAT(last_name,first_name) 姓名 
+FROM employees;
+
+SELECT CONCAT(1,1,1);
+SELECT CONCAT(NULL,NULL,NULL)l;
