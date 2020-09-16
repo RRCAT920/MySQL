@@ -238,11 +238,35 @@ SELECT
 FROM employees;
 
 -- 1. 显示系统时间(注:日期+时间)
+SELECT NOW();
+
+SELECT CURDATE();
+SELECT CURTIME();
+
+SELECT STR_TO_DATE('07-01 2011', '%c-%d %Y');
+SELECT DATE_FORMAT(NOW(), '%Y/%m/%d');
 -- 2. 查询员工号，姓名，工资，以及工资提高百分之 20%后的结果(new salary)
+SELECT
+	employee_id,
+	CONCAT(first_name, last_name),
+	salary * 1.2 "new salary"
+FROM employees;
+
 -- 3. 将员工的姓名按首字母排序，并写出姓名的长度(length)
+SELECT 
+	last_name, 
+	LENGTH(last_name) 姓名长度
+FROM employees
+ORDER BY SUBSTR(last_name, 1, 1);
+
 -- 4. 做一个查询，产生下面的结果
 -- Dream Salary
 -- <last_name> earns <salary> monthly but wants <salary*3>
+
+SELECT
+	CONCAT(last_name, ' earns ', salary, ' monthly but wants ', salary * 3) "Dream Salary"
+FROM employees;
+
 -- 5. 使用 case-when，按照下面的条件: 
 --      job grade 
 --  AD_PRES A
@@ -254,4 +278,182 @@ FROM employees;
 -- Last_name
 -- Job_id
 -- Grade
--- 
+
+SELECT
+	last_name Last_name,
+	job_id Job_id,
+	CASE job_id
+		WHEN 'AD_PRES' THEN 'A'
+		WHEN 'ST_MAN' THEN 'B'
+		WHEN 'IT_PROG' THEN 'C'
+		WHEN 'SA_REP' THEN 'D'
+		WHEN 'ST_CLERK' THEN 'E'
+	END Grade
+FROM employees;
+
+#二、分组函数
+/*
+功能：用作统计使用，又称为聚合函数或统计函数或组函数
+
+分类：
+sum 求和、avg 平均值、max 最大值 、min 最小值 、count 计算个数
+
+特点：
+1、sum、avg一般用于处理数值型
+   max、min、count可以处理任何类型
+	 
+2、以上分组函数都忽略null值
+
+3、可以和distinct搭配实现去重的运算
+
+4、count函数的单独介绍
+一般使用count(*)用作统计行数
+
+5、和分组函数一同查询的字段要求是group by后的字段
+
+*/
+
+#1、简单 的使用
+SELECT SUM(salary) FROM employees;
+SELECT AVG(salary) FROM employees;
+SELECT MIN(salary) FROM employees;
+SELECT MAX(salary) FROM employees;
+SELECT COUNT(salary) FROM employees;
+
+
+SELECT SUM(salary) 和,AVG(salary) 平均,MAX(salary) 最高,MIN(salary) 最低,COUNT(salary) 个数
+FROM employees;
+
+SELECT SUM(salary) 和,ROUND(AVG(salary),2) 平均,MAX(salary) 最高,MIN(salary) 最低,COUNT(salary) 个数
+FROM employees;
+
+#2、参数支持哪些类型
+
+SELECT SUM(last_name) ,AVG(last_name) FROM employees;
+SELECT SUM(hiredate) ,AVG(hiredate) FROM employees;
+
+SELECT MAX(last_name),MIN(last_name) FROM employees;
+
+SELECT MAX(hiredate),MIN(hiredate) FROM employees;
+
+SELECT COUNT(commission_pct) FROM employees;
+SELECT COUNT(last_name) FROM employees;
+
+#3、是否忽略null
+
+SELECT SUM(commission_pct) ,AVG(commission_pct),SUM(commission_pct)/35,SUM(commission_pct)/107 FROM employees;
+
+SELECT MAX(commission_pct) ,MIN(commission_pct) FROM employees;
+
+SELECT COUNT(commission_pct) FROM employees;
+SELECT commission_pct FROM employees;
+
+
+#4、和distinct搭配
+
+SELECT SUM(DISTINCT salary),SUM(salary) FROM employees;
+
+SELECT COUNT(DISTINCT salary),COUNT(salary) FROM employees;
+
+
+
+#5、count函数的详细介绍
+
+SELECT COUNT(salary) FROM employees;
+
+
+SELECT COUNT(*) FROM employees;
+
+SELECT COUNT(1) FROM employees;
+
+效率：
+MYISAM存储引擎下  ，COUNT(*)的效率高
+INNODB存储引擎下，COUNT(*)和COUNT(1)的效率差不多，比COUNT(字段)要高一些
+
+
+#6、和分组函数一同查询的字段有限制
+
+SELECT AVG(salary),employee_id  FROM employees;
+
+SELECT AVG(salary),job_id  FROM employees GROUP BY job_id;
+
+
+
+#1.查询公司员工工资的最大值，最小值，平均值，总和
+SELECT
+	MAX(salary) 最大值,
+	MIN(salary) 最小值,
+	AVG(salary) 平均值,
+	SUM(salary) 总和
+FROM employees;
+
+#2.查询员工表中的最大入职时间和最小入职时间的相差天数 
+SELECT
+	MAX(hiredate) 最大入职时间,
+	MIN(hiredate) 最小入职时间,
+	DATEDIFF(MAX(hiredate), MIN(hiredate)) 相差天数
+FROM 
+	employees;
+
+#3.查询部门编号为90的员工个数
+SELECT
+	COUNT(*)
+FROM employees
+WHERE department_id = 90;
+
+-- 测试
+-- 1. 查询各 job_id 的员工工资的最大值，最小值，平均值，总和，并按 job_id 升序
+SELECT 
+	job_id,
+	MAX(salary) 最大值,
+	MIN(salary) 最小值,
+	AVG(salary) 平均值,
+	SUM(salary) 总和
+FROM 
+	employees
+GROUP BY 
+	job_id
+ORDER BY 
+	job_id;
+
+-- 2. 查询员工最高工资和最低工资的差距
+SELECT
+	MAX(salary) - MIN(salary) 差距
+FROM 
+	employees;
+
+-- 3. 查询各个管理者手下员工的最低工资，其中最低工资不能低于 6000，没有管理者的员
+-- 工不计算在内
+SELECT
+	manager_id 管理者,
+	MIN(salary) 最低工资
+FROM 
+	employees
+WHERE 
+	manager_id IS NOT NULL
+	AND salary >= 6000
+GROUP BY 
+	manager_id;
+
+-- 4. 查询所有部门的编号，员工数量和工资平均值(精度2),并按平均工资降序
+SELECT
+	department_id 部门编号,
+	COUNT(*) 员工数量,
+	ROUND(AVG(salary), 2) 工资平均值
+FROM
+	employees
+GROUP BY
+	department_id
+ORDER BY
+	工资平均值;
+	
+-- 5. 选择具有各个 job_id 的员工人数，按人数降序
+SELECT
+	job_id,
+	COUNT(*) 员工人数
+FROM
+	employees
+GROUP BY 
+	job_id
+ORDER BY
+	员工人数 DESC;
