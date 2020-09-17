@@ -457,3 +457,20 @@ GROUP BY
 	job_id
 ORDER BY
 	员工人数 DESC;
+
+SELECT 
+	COUNT(DISTINCT last_name, first_name)
+FROM
+	employees;
+
+SELECT
+	COUNT(DISTINCT manager_id, commission_pct), COUNT(DISTINCT commission_pct, manager_id)
+FROM
+	employees;
+
+SELECT
+	manager_id,
+  commission_pct
+FROM
+	employees;
+	

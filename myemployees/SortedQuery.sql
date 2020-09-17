@@ -68,3 +68,4 @@ SELECT *
 FROM employees
 WHERE email LIKE '%e%'
 ORDER BY LENGTH(email) DESC, department_id;
+
