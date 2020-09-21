@@ -68,3 +68,13 @@ TRUNCATE TABLE
 
 TRUNCATE TABLE
 	my_employees;
+	
+SELECT
+	*
+FROM
+	users;
+	
+SELECT
+	*
+FROM
+	my_employees;
