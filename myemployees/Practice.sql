@@ -54,16 +54,20 @@ GROUP BY
 	sex,
 	majorid;
 
--- 六、查询专业和张翠山一样的学生的最低分 !
+-- 六、查询专业和张翠山一样的学生的最低分
 SELECT
 	MIN(score)
 FROM
-	result
+	result r 
+JOIN
+	student s
+ON
+	r.studentno = s.studentno
 WHERE
-	studentno IN
+	s.majorid IN
 		(
 			SELECT
-				studentno
+				majorid
 			FROM
 				student
 			WHERE
