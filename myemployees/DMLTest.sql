@@ -2,12 +2,14 @@ USE
 	myemployees;
 
 Create table 
-	my_employees(
+	my_employees
+	(
 		Id int(10),
 		First_name varchar(10),
 		Last_name varchar(10),
 		Userid varchar(10),
-		Salary double(10,2) )
+		Salary double(10,2)
+	);
 create table users(
 id int,
 userid varchar(10),

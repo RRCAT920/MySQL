@@ -12,3 +12,21 @@ ALTER TABLE
 
 DROP TABLE
 	表名;
+	
+CREATE TABLE
+	终
+LIKE
+	始;
+
+CREATE TABLE
+	终
+SELECT
+	列名1,
+	...
+FROM
+	始
+[WHERE
+	筛选条件];
+
+部门复制技巧
+WHERE 0;
