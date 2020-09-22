@@ -7,3 +7,8 @@ ALTER TABLE
 	emp2
 ADD
 	CONSISTENT my_emp_id_pk PRIMARY KEY(id);
+	
+ALTER TABLE
+	emp2
+ADD
+	FOREIGN KEY(dept_id) REFERENCES dept2(id);

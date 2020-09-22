@@ -1,0 +1,10 @@
+SELECT @@transcation_isolation;
+
+SET SESSION|GLOBAL TRANSACTION ISOLATION LEVEL 级别;
+
+SET autocommit = 0;
+START TRANSACTION;
+-- SQL
+COMMIT|ROLLBACK [TO 节点名];
+
+SAVEPOINT 节点名;
