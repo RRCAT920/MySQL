@@ -25,7 +25,7 @@ SET @@autocommit = 0;
 -- SELECT last_name INTO @lname
 -- FROM employees;
 -- 
--- SELECT @lname;
+-- SELECT @lname; 
 
 CREATE PROCEDURE hello()
 BEGIN
@@ -52,3 +52,7 @@ CREATE PROCEDURE login(
 		
 	SELECT IF(res, '成功', '失败') 登录信息;
 END;
+
+CALL login('张飞', '8000');
+CALL login('john', '8888');
+CALL login('张飞', '8000');
