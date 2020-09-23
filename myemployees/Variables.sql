@@ -26,3 +26,29 @@ SET @@autocommit = 0;
 -- FROM employees;
 -- 
 -- SELECT @lname;
+
+CREATE PROCEDURE hello()
+BEGIN
+	SELECT * from employees;
+END;
+
+CREATE PROCEDURE say()
+BEGIN
+	SELECT * from employees;
+END;
+
+CALL hello();
+
+USE girls;
+CREATE PROCEDURE login(
+	IN username VARCHAR(10), 
+	IN password VARCHAR(10)) BEGIN
+	DECLARE res INT DEFAULT 0;
+	
+	SELECT COUNT(*) INTO res
+	FROM admin a
+	WHERE a.username = username AND
+		a.password = password;
+		
+	SELECT IF(res, '成功', '失败') 登录信息;
+END;
